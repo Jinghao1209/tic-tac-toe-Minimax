@@ -76,6 +76,7 @@ char playerType(int pl) {
 }
 
 // 如果有赢家，则返回赢家，没有赢家则返回0
+// return winner if have winner else return 0
 int Winner() {
     // horizontal
     for (int i = 0; i < 3; i++) {
@@ -122,7 +123,11 @@ boolean isPlayerTime() {
 
 void getPlayerMove(int player) {
     Map move;
-    scanf("%d%d", &move.x, &move.y);
+    int c;
+    while ((c = getchar()) != '\0') {
+        scanf("%d%d", &move.x, &move.y);
+        break;
+    }
     if (!isValidMove(move)) {
         printf("Not A Valid Move! Move should be: <int x> <int y>\nYou Enter: <x: %d> <y: %d>\n", move.x, move.y);
         getPlayerMove(player);
@@ -148,7 +153,7 @@ int Minimax(int map[3][3], int depth, boolean isMaximizing) {
     }
 
     if (isMaximizing) {
-        int bestScore = -1;
+        int bestScore = -0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (isSpace(i, j)) {
@@ -163,7 +168,7 @@ int Minimax(int map[3][3], int depth, boolean isMaximizing) {
         }
         return bestScore;
     } else {
-        int bestScore = 0;
+        int bestScore = -0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (isSpace(i, j)) {
@@ -183,7 +188,7 @@ int Minimax(int map[3][3], int depth, boolean isMaximizing) {
 void bestMove() {
     Map move;
     insertBasicMap(&move);
-    int bestScore = -1;
+    int bestScore = -2;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (isSpace(i, j)) {
@@ -202,36 +207,46 @@ void bestMove() {
 }
 
 int main(int argc, char const *argv[]) {
-    printf("AI FIRST? (Y, N): "); // default AI first
+    printf("FIX SOME BUG BUT THE AI STILL IDIOT\n");
+    printf("AI FIRST? (Y, N): ");          // default AI first
     char first = getchar();
     if (first == 78) {          // N, Y: 89
+        printf("\n\nSOME BUG IN HERE, :(\n\n");
         playerTurn = true;
-        printMap();
         printf("\n");
+        printf("Map: \n");
+        printMap();
     }
 
     // 如果还有位置，并且没有赢家，执行
+    // if still have place and no winner
     while (haveSpace() && !Winner()) {
         if (isPlayerTime()) {
             printf("Is Player Time!\n");
 
             // 获取玩家步骤
+            // get player move
             getPlayerMove(player);
         } else {
             printf("Is AI Time!\n");
 
             // MINIMAX 算法
+            // MINIMAX algorithm
             bestMove();
         }
 
         // 打印地图
+        // print the map
         printMap();
         // 如果还有空间并且没有赢家
+        // if still have space and no winner
         haveSpace() && !Winner() ? printf("Next Round\n\n") : 0;
     }
 
     if (Winner())
-        printf("\nWinner is: %s!\n", playerType(Winner()) == ai ? "AI" : "PLAYER");          // 所以检测是AI还是玩家
+        // 所以检测是AI还是玩家
+        // check is AI or player
+        printf("\nWinner is: %s!\n", playerType(Winner()) == ai ? "AI" : "PLAYER");
     else
         printf("\nTIE!\n");
     return 0;
